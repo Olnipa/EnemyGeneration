@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class Spawner : MonoBehaviour
 {
-    [SerializeField] private Player _enemy;
+    [SerializeField] private Player _player;
 
     private SpawnPoint[] _spawnPoints;
     private bool _isSpawning;
@@ -25,12 +25,15 @@ public class Spawner : MonoBehaviour
         {
             foreach (SpawnPoint spawnPoint in _spawnPoints)
             {
-                if (_enemy.IsAlive == false)
+                Debug.Log("_player.IsAlive: " + _player.IsAlive);
+
+                if (_player.IsAlive == false)
                 {
+                    Debug.Log("_player.IsAlive == false");
                     _isSpawning = false;
                 }
 
-                spawnPoint.InvokeEnemySpowner();
+                spawnPoint.InvokeSpawnedEnemy();
                 yield return waitTwoSeconds;
             }
         }

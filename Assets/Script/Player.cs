@@ -6,14 +6,14 @@ using UnityEngine.EventSystems;
 public class Player : MonoBehaviour
 {
     [SerializeField] private Animator _animator;
-    [SerializeField] private GameObject _rootSkill;
+    [SerializeField] private Root _rootSkill;
 
     private int _animatorDeathHash;
     private int _animatorCastHash;
 
     public bool IsAlive { get; private set; }
 
-    private void Start()
+    private void Awake()
     {
         IsAlive = true;
         _animatorDeathHash = Animator.StringToHash(PlayerAnimatorController.State.Death);

@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-[RequireComponent(typeof(Transform))]
-
 public class SpawnPoint : MonoBehaviour
 {
-    [SerializeField] private GameObject _enemy;
+    [SerializeField] private Skeleton _skeleton;
 
     private UnityEvent _spawnedEnemy = new UnityEvent();
 
@@ -22,15 +20,18 @@ public class SpawnPoint : MonoBehaviour
         _spawnedEnemy.AddListener(SpawnNewEnemy);
     }
 
-    private void SpawnNewEnemy()
+    private void OnDisable()
     {
-        Instantiate(_enemy, transform.position, Quaternion.identity);
+        _spawnedEnemy.RemoveListener(SpawnNewEnemy);
     }
 
-    public void InvokeEnemySpowner()
+    private void SpawnNewEnemy()
+    {
+        Instantiate(_skeleton, transform.position, Quaternion.identity);
+    }
+
+    public void InvokeSpawnedEnemy()
     {
         _spawnedEnemy.Invoke();
     }
 }
-
-

@@ -8,7 +8,7 @@ public class Skeleton : MonoBehaviour
 {
     [SerializeField] private Animator _animator;
     [SerializeField] private SpriteRenderer _spriteRenderer;
-    [SerializeField] private Player _enemy;
+    [SerializeField] private Player _player;
 
     private float _maxSpeed;
     private float _minSpeed;
@@ -41,11 +41,11 @@ public class Skeleton : MonoBehaviour
     {
         if (_isCollisionWithEnemy == false)
         {
-            _enemy = FindObjectOfType<Player>();
+            _player = FindObjectOfType<Player>();
 
-            if (_enemy.IsAlive && IsAlive)
+            if (_player.IsAlive && IsAlive)
             {
-                MoveToEnemy(_enemy);
+                MoveToEnemy(_player);
             }
             else
             {
