@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class SpawnTrigger : MonoBehaviour
+public class Spawner : MonoBehaviour
 {
+    [SerializeField] private Player _enemy;
+
     private SpawnPoint[] _spawnPoints;
+    private bool _isSpawning;
 
     private void Start()
     {
+        _isSpawning = true;
         _spawnPoints = GetComponentsInChildren<SpawnPoint>();
         StartCoroutine(EnemySpawnJob());
     }
@@ -17,11 +21,16 @@ public class SpawnTrigger : MonoBehaviour
     {
         var waitTwoSeconds = new WaitForSeconds(2f);
 
-        while (true)
+        while (_isSpawning)
         {
             foreach (SpawnPoint spawnPoint in _spawnPoints)
             {
-                spawnPoint.SpawnEnemy.Invoke();
+                if (_enemy.IsAlive == false)
+                {
+                    _isSpawning = false;
+                }
+
+                spawnPoint.InvokeEnemySpowner();
                 yield return waitTwoSeconds;
             }
         }

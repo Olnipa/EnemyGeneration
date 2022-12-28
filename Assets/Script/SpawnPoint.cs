@@ -7,25 +7,29 @@ using UnityEngine.Events;
 
 public class SpawnPoint : MonoBehaviour
 {
-    public UnityEvent SpawnEnemy;
     [SerializeField] private GameObject _enemy;
-    [SerializeField] private Transform _transform;
+
+    private UnityEvent _spawnedEnemy = new UnityEvent();
 
     public event UnityAction OnSpawnEnemy
     {
-        add => SpawnEnemy.AddListener(value);
-        remove => SpawnEnemy.RemoveListener(value);
+        add => _spawnedEnemy.AddListener(value);
+        remove => _spawnedEnemy.RemoveListener(value);
     }
 
     private void Start()
     {
-        _transform = GetComponent<Transform>();
-        SpawnEnemy.AddListener(SpawnNewEnemy);
+        _spawnedEnemy.AddListener(SpawnNewEnemy);
     }
 
     private void SpawnNewEnemy()
     {
-        Instantiate(_enemy, new Vector3(_transform.position.x, _transform.position.y, _transform.position.z), Quaternion.identity);
+        Instantiate(_enemy, transform.position, Quaternion.identity);
+    }
+
+    public void InvokeEnemySpowner()
+    {
+        _spawnedEnemy.Invoke();
     }
 }
 
