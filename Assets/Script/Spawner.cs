@@ -25,15 +25,13 @@ public class Spawner : MonoBehaviour
         {
             foreach (SpawnPoint spawnPoint in _spawnPoints)
             {
-                Debug.Log("_player.IsAlive: " + _player.IsAlive);
-
                 if (_player.IsAlive == false)
                 {
-                    Debug.Log("_player.IsAlive == false");
                     _isSpawning = false;
+                    break;
                 }
 
-                spawnPoint.InvokeSpawnedEnemy();
+                spawnPoint.SpawnNewEnemy();
                 yield return waitTwoSeconds;
             }
         }

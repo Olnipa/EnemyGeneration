@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private Animator _animator;
     [SerializeField] private Root _rootSkill;
+    [SerializeField] private SpriteRenderer _spriteRenderer;
 
     private int _animatorDeathHash;
     private int _animatorCastHash;
@@ -25,6 +26,7 @@ public class Player : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && IsAlive) 
         {
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            mousePosition.z = 9;
             RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector3.zero);
 
             if (hit)
@@ -33,9 +35,14 @@ public class Player : MonoBehaviour
                 {
                     if (skeleton.IsAlive)
                     {
-                        CastRoot(skeleton);
+                        CastRoot(skeleton.transform.position);
+                        skeleton.TakeDamage();
                     }
                 }
+            }
+            else
+            {
+                CastRoot(mousePosition);
             }
         }
     }
@@ -50,10 +57,9 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void CastRoot(Skeleton enemy)
+    private void CastRoot(Vector3 position)
     {
-        Instantiate(_rootSkill, enemy.transform.position, Quaternion.identity);
-        enemy.TakeDamage();
+        Instantiate(_rootSkill, position, Quaternion.identity);
         _animator.Play(_animatorCastHash);
     }
 }
